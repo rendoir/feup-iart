@@ -1,1 +1,4 @@
 # FEUP-IART
+
+Dependencies:
+numpy
