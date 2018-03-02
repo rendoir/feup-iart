@@ -119,12 +119,18 @@ class Network(object):
 
     def evaluate(self, test_data):
         """Return the number of test inputs for which the neural
-        network outputs the correct result. Note that the neural
-        network's output is assumed to be the index of whichever
-        neuron in the final layer has the highest activation."""
-        test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]
-        return sum(int(x == y) for (x, y) in test_results)
+        network outputs the correct result. 
+        Note that the neural network's output is assumed to be the index of whichever
+        neuron in the final layer has the highest activation if it's a non-binary output.
+        If the output is binary then it's rounded to 0 or 1 and compared to the expected result."""
+        if self.sizes[-1] != 1: #non-binary output
+            test_results = [(np.argmax(self.feedforward(x)), y)
+                            for (x, y) in test_data]
+            return sum(int(x == y) for (x, y) in test_results)
+        else: #binary output
+            test_results = [(np.amax(self.feedforward(x)), y)
+                            for (x, y) in test_data]
+            return sum(int(int(round(x)) == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
