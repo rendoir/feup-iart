@@ -1,4 +1,0 @@
-# FEUP-IART
-
-Dependencies:
-numpy
