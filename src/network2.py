@@ -290,7 +290,7 @@ class Network(object):
         cost = 0.0
         for x, y in data:
             a = self.feedforward(x)
-            if convert: y = vectorized_result(y)
+            if convert: y = vectorized_result(y, self.sizes[-1])
             cost += self.cost.fn(a, y)/len(data)
         cost += 0.5*(lmbda/len(data))*sum(
             np.linalg.norm(w)**2 for w in self.weights)
@@ -322,15 +322,18 @@ def load(filename):
     return net
 
 #### Miscellaneous functions
-def vectorized_result(j):
+def vectorized_result(j, n_out):
     """Return a 10-dimensional unit vector with a 1.0 in the j'th position
     and zeroes elsewhere.  This is used to convert a digit (0...9)
     into a corresponding desired output from the neural network.
 
     """
-    e = np.zeros((10, 1))
-    e[j] = 1.0
-    return e
+    res = np.zeros((n_out, 1))
+    if n_out == 1:
+        res[0] = j
+    else:
+        res[j] = 1.0
+    return res
 
 def sigmoid(z):
     """The sigmoid function."""

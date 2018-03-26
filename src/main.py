@@ -13,13 +13,28 @@ test_data = list()
 for test in raw_test_data:
     test_data.append((test[:-1].reshape(8, 1), test[-1].astype(int)))
 
-#network2.py
+#run neural network
 import network2
 net = network2.Network([8, 100, 1])
 net.SGD(training_data, 10, 100, 0.1, lmbda = 10.0,
-evaluation_data=test_data,
+    evaluation_data=test_data,
+    monitor_evaluation_cost=True,
+    monitor_evaluation_accuracy=True,
+    monitor_training_cost=True,
+    monitor_training_accuracy=True)
+print "Accuracy: {0} / {1}".format(net.accuracy(test_data), len(test_data))
+
+
+'''
+import mnist_loader
+training_data, validation_data, test_data = \
+mnist_loader.load_data_wrapper()
+import network2
+net = network2.Network([784, 30, 10])
+net.SGD(training_data, 30, 10, 0.5, lmbda = 5.0,
+evaluation_data=validation_data,
 monitor_evaluation_cost=True,
 monitor_evaluation_accuracy=True,
 monitor_training_cost=True,
 monitor_training_accuracy=True)
-print "Accuracy: {0} / {1}".format(net.accuracy(test_data), len(test_data))
+'''
