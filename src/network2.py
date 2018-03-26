@@ -263,10 +263,14 @@ class Network(object):
         mnist_loader.load_data_wrapper.
         """
         if self.sizes[-1] == 1:
-            results = [(np.amax(self.feedforward(x)), y)
-                           for (x, y) in data]
-            return sum(int(int(round(x)) == y) for (x, y) in results)  
-        else: 
+            if convert:
+                results = [(np.amax(self.feedforward(x)), np.amax(y))
+                               for (x, y) in data]
+            else:
+                results = [(np.amax(self.feedforward(x)), y)
+                               for (x, y) in data]
+            return sum(int(int(round(x)) == y) for (x, y) in results)
+        else:
             if convert:
                 results = [(np.argmax(self.feedforward(x)), np.argmax(y))
                            for (x, y) in data]
@@ -274,7 +278,7 @@ class Network(object):
                 results = [(np.argmax(self.feedforward(x)), y)
                          for (x, y) in data]
             return sum(int(x == y) for (x, y) in results)
-            
+
 
     def total_cost(self, data, lmbda, convert=False):
         """Return the total cost for the data set ``data``.  The flag
