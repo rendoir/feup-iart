@@ -22,7 +22,8 @@ net.SGD(training_data, 10, 100, 0.1, lmbda = 10.0,
     monitor_evaluation_accuracy=True,
     monitor_training_cost=True,
     monitor_training_accuracy=True)
-print "Accuracy: {0} / {1}".format(net.accuracy(test_data), len(test_data))
+accuracy = float(net.accuracy(test_data))/len(test_data)*100.0;	
+print "Accuracy: {0} / {1} = {2}".format(net.accuracy(test_data), len(test_data),accuracy)
 
 
 '''
