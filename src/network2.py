@@ -162,27 +162,24 @@ class Network(object):
                 training_data[k:k+mini_batch_size]
                 for k in xrange(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
-                self.update_mini_batch(
-                    mini_batch, eta, lmbda, len(training_data))
+                self.update_mini_batch(mini_batch, eta, lmbda, len(training_data))
             print "Epoch %s training complete" % j
             if monitor_training_cost:
                 cost = self.total_cost(training_data, lmbda)
                 training_cost.append(cost)
                 print "Cost on training data: {}".format(cost)
             if monitor_training_accuracy:
-                accuracy = self.accuracy(training_data, convert=True)
+                accuracy, msg = self.accuracy(training_data, convert=True)
                 training_accuracy.append(accuracy)
-                print "Accuracy on training data: {} / {}".format(
-                    accuracy, n)
+                print "Accuracy on training data: {} / {} = {:.2f} %\n{}".format(accuracy, n, 100.0*accuracy/n, msg)
             if monitor_evaluation_cost:
                 cost = self.total_cost(evaluation_data, lmbda, convert=True)
                 evaluation_cost.append(cost)
                 print "Cost on evaluation data: {}".format(cost)
             if monitor_evaluation_accuracy:
-                accuracy = self.accuracy(evaluation_data)
+                accuracy, msg = self.accuracy(evaluation_data)
                 evaluation_accuracy.append(accuracy)
-                print "Accuracy on evaluation data: {} / {}".format(
-                    self.accuracy(evaluation_data), n_data)
+                print "Accuracy on evaluation data: {} / {} = {:.2f} %\n{}".format(accuracy, n_data, 100.0*accuracy/n_data, msg)
             print
         return evaluation_cost, evaluation_accuracy, \
             training_cost, training_accuracy
@@ -269,7 +266,14 @@ class Network(object):
             else:
                 results = [(np.amax(self.feedforward(x)), y)
                                for (x, y) in data]
-            return sum(int(int(round(x)) == y) for (x, y) in results)
+            correct = [0,0]
+            total = [0,0]
+            for (x, y) in results:
+                total[y] += 1
+                correct[y] += int(int(round(x)) == y)
+            msg = "  Correct positives: {} / {} = {:.2f} %\n  Correct negatives = {} / {} = {:.2f} %".format(
+                correct[0],total[0],100.0*correct[0]/total[0],correct[1],total[1],100.0*correct[1]/total[1])
+            return correct[0] + correct[1], msg
         else:
             if convert:
                 results = [(np.argmax(self.feedforward(x)), np.argmax(y))
@@ -277,7 +281,7 @@ class Network(object):
             else:
                 results = [(np.argmax(self.feedforward(x)), y)
                          for (x, y) in data]
-            return sum(int(x == y) for (x, y) in results)
+            return sum(int(x == y) for (x, y) in results), ""
 
 
     def total_cost(self, data, lmbda, convert=False):
