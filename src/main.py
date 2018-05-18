@@ -2,6 +2,7 @@ import network
 import plot
 
 import random
+import sys
 import numpy as np
 
 #Load data
@@ -12,6 +13,8 @@ file = open(filename, 'rU')
 data = np.loadtxt(file, delimiter=',')
 n_data = len(data)
 random.shuffle(data)
+p_flag = '-p' in sys.argv or '--plot' in sys.argv
+m_flag = '-m' in sys.argv or '--monitor' in sys.argv or p_flag
 #Normalize data
 max_values = data.max(axis=0)
 min_values = data.min(axis=0)
@@ -41,14 +44,15 @@ print "  Positives: {} / {} = {:.2f} %".format(test_positives, n_test, 100.0*tes
 print "  Negatives: {} / {} = {:.2f} %\n".format(n_test - test_positives, n_test, 100.0*(n_test - test_positives)/n_test)
 
 #Run neural network
-net = network.Network([8, 100, 1])
-test_cost, test_accuracy, training_cost, training_accuracy = net.stochastic_gradient_descent(training_data, 10, 10, 0.1, lmbda = 10.0,
+net = network.Network([8, 8, 8, 1])
+test_cost, test_accuracy, training_cost, training_accuracy = net.stochastic_gradient_descent(training_data, 10, 8, 0.25, lmbda = 0.75,
         evaluation_data=test_data,
-        monitor_evaluation_cost=True,
-        monitor_evaluation_accuracy=True,
-        monitor_training_cost=True,
-        monitor_training_accuracy=True)
+        monitor_evaluation_cost=m_flag,
+        monitor_evaluation_accuracy=m_flag,
+        monitor_training_cost=m_flag,
+        monitor_training_accuracy=m_flag)
 n_success, msg = net.accuracy(test_data)
 p_accuracy = float(n_success)/n_test*100.0;
 print "Accuracy on test data: {} / {} = {:.2f} %\n{}".format(n_success, n_test, p_accuracy, msg)
-plot.plot_statistics(test_cost, test_accuracy, training_cost, training_accuracy, n_train, n_test)
+if p_flag:
+    plot.plot_statistics(test_cost, test_accuracy, training_cost, training_accuracy, n_train, n_test)
