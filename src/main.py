@@ -37,7 +37,7 @@ print "  Negatives: {} / {} = {:.2f} %\n".format(len(test_data) - test_positives
 #Run neural network
 import network2
 net = network2.Network([8, 100, 1])
-net.SGD(training_data, 10, 10, 0.25, lmbda = 10.0,
+net.stochastic_gradient_descent(training_data, 10, 10, 0.1, lmbda = 10.0,
         evaluation_data=test_data,
         monitor_evaluation_cost=True,
         monitor_evaluation_accuracy=True,
