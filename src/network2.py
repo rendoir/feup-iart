@@ -92,8 +92,7 @@ class Network(object):
                 evaluation_accuracy.append(accuracy)
                 print "Accuracy on evaluation data: {} / {} = {:.2f} %\n{}".format(accuracy, n_data, 100.0*accuracy/n_data, msg)
             print
-        return evaluation_cost, evaluation_accuracy, \
-            training_cost, training_accuracy
+        return evaluation_cost, evaluation_accuracy, training_cost, training_accuracy
 
     def update_batch(self, batch, learning_rate, lmbda, n):
         """
