@@ -50,4 +50,4 @@ test_cost, test_accuracy, training_cost, training_accuracy = net.stochastic_grad
 n_success, msg = net.accuracy(test_data)
 p_accuracy = float(n_success)/len(test_data)*100.0;
 print "Accuracy on test data: {} / {} = {:.2f} %\n{}".format(n_success, len(test_data), p_accuracy, msg)
-plot.plot_statistics(test_cost, test_accuracy, training_cost, training_accuracy, 10)
+plot.plot_statistics(test_cost, test_accuracy, training_cost, training_accuracy, len(training_data), len(test_data), 10)
