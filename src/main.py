@@ -89,8 +89,8 @@ print "  Positives: {} / {} = {:.2f} %".format(test_positives, len(test_data), 1
 print "  Negatives: {} / {} = {:.2f} %\n".format(len(test_data) - test_positives, len(test_data), 100.0*(len(test_data) - test_positives)/len(test_data))
 
 #Run neural network
-import network2
-net = network2.Network([8, 100, 1])
+import network
+net = network.Network([8, 100, 1])
 test_cost, test_accuracy, training_cost, training_accuracy = net.stochastic_gradient_descent(training_data, 10, 10, 0.1, lmbda = 10.0,
         evaluation_data=test_data,
         monitor_evaluation_cost=True,
