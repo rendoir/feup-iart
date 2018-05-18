@@ -15,7 +15,7 @@ class CrossEntropyCost(object):
 
 class Network(object):
 
-    def __init__(self, sizes, cost=CrossEntropyCost):
+    def __init__(self, sizes):
         """
         The list ``sizes`` contains the number of neurons in the respective
         layers of the network. The cost is a specific implementation of a generic cost function.
@@ -23,7 +23,7 @@ class Network(object):
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.init_weights()
-        self.cost=cost
+        self.cost=CrossEntropyCost
 
     def init_weights(self):
         """

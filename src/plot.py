@@ -2,11 +2,12 @@ import numpy
 import matplotlib.pyplot as plt
 
 def plot_statistics(test_cost, test_accuracy, training_cost, training_accuracy,
-               training_set_size, test_set_size, num_epochs,
+               training_set_size, test_set_size,
                training_cost_xmin=0,
                test_accuracy_xmin=0,
                test_cost_xmin=0,
                training_accuracy_xmin=0):
+    num_epochs = len(training_accuracy)
     plot_cost(test_cost, training_cost, num_epochs,
                  min(training_cost_xmin, test_cost_xmin))
     plot_accuracy(test_accuracy, training_accuracy, num_epochs,
