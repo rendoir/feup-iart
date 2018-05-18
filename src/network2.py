@@ -272,7 +272,7 @@ class Network(object):
                 total[y] += 1
                 correct[y] += int(int(round(x)) == y)
             msg = "  Correct positives: {} / {} = {:.2f} %\n  Correct negatives = {} / {} = {:.2f} %".format(
-                correct[0],total[0],100.0*correct[0]/total[0],correct[1],total[1],100.0*correct[1]/total[1])
+                correct[1],total[1],100.0*correct[1]/total[1],correct[0],total[0],100.0*correct[0]/total[0])
             return correct[0] + correct[1], msg
         else:
             if convert:

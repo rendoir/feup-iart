@@ -6,6 +6,7 @@ numpy.seterr(all='ignore')
 filename = '../HTRU2/HTRU_2.csv'
 file = open(filename, 'rU')
 data = numpy.loadtxt(file, delimiter=',')
+random.shuffle(data)
 #Normalize data
 max_values = data.max(axis=0)
 min_values = data.min(axis=0)
@@ -15,8 +16,9 @@ for i in range(len(data)):
 train_positives = 0
 test_positives = 0
 #Separate training (80%) from testing (20%)
-raw_training_data = data[:14318]
-raw_test_data = data[14318:]
+data_split = int(0.8 * len(data))
+raw_training_data = data[:data_split]
+raw_test_data = data[data_split:]
 training_data = list()
 for train in raw_training_data:
     train_positives += int(train[8])
@@ -35,7 +37,7 @@ print "  Negatives: {} / {} = {:.2f} %\n".format(len(test_data) - test_positives
 #Run neural network
 import network2
 net = network2.Network([8, 100, 1])
-net.SGD(training_data, 10, 100, 0.1, lmbda = 10.0,
+net.SGD(training_data, 10, 10, 0.25, lmbda = 10.0,
         evaluation_data=test_data,
         monitor_evaluation_cost=True,
         monitor_evaluation_accuracy=True,
